@@ -1,45 +1,33 @@
 package rest.configuration
 
-import domain.services.EventService
-import domain.services.WebhookService
+import domain.services.JtiService
 import org.koin.core.module.Module
 import org.koin.dsl.module
-import repository.EventsRepository
+import repository.JtiRepositoryImpl
 import repository.config.PostgresDBConfig
-import rest.controller.EventsController
-import rest.controller.WebhookController
-import rest.routes.EventsRoutes
-import rest.routes.WebhookRoutes
+import rest.controller.JtiController
+import rest.routes.JtiRouter
 
-
-val eventsRoutesModule: Module = module {
-    single { EventsRoutes(get()) }
-}
 
 val webhooksRoutesModule: Module = module {
-    single { WebhookRoutes(get()) }
+    single { JtiRouter(get()) }
 }
 
-val eventsControllerModule: Module = module {
-    single { EventsController(get()) }
+
+val jtiControllerModule: Module = module {
+    single { JtiController(get()) }
 }
 
-val webhookControllerModule: Module = module {
-    single { WebhookController(get()) }
-}
-val eventServiceModule: Module = module {
-    single { EventService(EventsRepository(PostgresDBConfig)) }
-}
-val webhookServiceModule: Module = module {
-    single { WebhookService(EventsRepository(PostgresDBConfig)) }
+val jtiServiceModule: Module = module {
+    single { JtiService(JtiRepositoryImpl(PostgresDBConfig)) }
 }
 
 val postgresDBConfig: Module = module {
     single { PostgresDBConfig }
 }
 
-val eventsRepository: Module = module {
-    single { EventsRepository(PostgresDBConfig) }
+val jtiRepository: Module = module {
+    single { JtiRepositoryImpl(PostgresDBConfig) }
 }
 
 

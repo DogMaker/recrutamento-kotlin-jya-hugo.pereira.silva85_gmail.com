@@ -6,10 +6,8 @@ import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.get
-import repository.config.PostgresDBConfig
 import rest.configuration.*
-import rest.routes.EventsRoutes
-import rest.routes.WebhookRoutes
+import rest.routes.JtiRouter
 
 
 object App : KoinComponent {
@@ -20,12 +18,9 @@ object App : KoinComponent {
         startKoin {
             loadKoinModules(
                     listOf(
-                            eventsRoutesModule,
                             webhooksRoutesModule,
-                            eventsControllerModule,
-                            webhookControllerModule,
-                            eventServiceModule,
-                            webhookServiceModule
+                            jtiControllerModule,
+                            jtiServiceModule
                     )
             )
         }
@@ -40,11 +35,8 @@ object App : KoinComponent {
 
 
         app.routes {
-            get<WebhookRoutes>().register()
-            get<EventsRoutes>().register()
+            get<JtiRouter>().register()
         }
-
-        //get<PostgresDBConfig>().startConnection()
     }
 
     fun shutdown() {

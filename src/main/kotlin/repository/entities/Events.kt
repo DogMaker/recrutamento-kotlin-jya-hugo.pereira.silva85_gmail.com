@@ -1,8 +1,5 @@
 package repository.entities
 
-import domain.entities.Commit
-import domain.entities.Pusher
-
 data class Events(
         val action: String?,
         val created_at:  String?,
