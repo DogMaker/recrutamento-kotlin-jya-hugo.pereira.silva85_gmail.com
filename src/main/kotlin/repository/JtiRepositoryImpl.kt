@@ -68,7 +68,7 @@ class JtiRepositoryImpl : JtiRepository {
         }
     }
 
-    override fun deleteAllExpiredJti(jti: String): Int {
+    override fun deleteAllExpiredJti(): Int {
         logger.info(LogTags.DELETE_JI) { "Delete all Jti expired records" }
 
         return transaction {

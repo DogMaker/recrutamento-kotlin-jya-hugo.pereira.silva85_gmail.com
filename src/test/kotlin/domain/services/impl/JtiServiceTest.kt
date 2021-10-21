@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
 
-class JtiServiceImplTest {
+class JtiServiceTest {
     private val jtiRepository = mockk<JtiRepository>(relaxed = true)
     private val jtiServiceImpl = JtiServiceImpl(jtiRepository)
 
