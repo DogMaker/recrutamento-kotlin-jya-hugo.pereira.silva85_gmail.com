@@ -2,11 +2,11 @@ package domain.services.impl
 
 import domain.entities.Jti
 import domain.extensions.isExpired24Time
+import domain.repository.JtiRepository
 import domain.services.JtiService
-import repository.JtiRepositoryImpl
 
 
-class JtiServiceImpl(private val jtiRepository: JtiRepositoryImpl): JtiService {
+class JtiServiceImpl(private val jtiRepository: JtiRepository): JtiService {
 
     override fun isAlreadyRegistered(jti: Jti): Jti {
 
@@ -16,10 +16,9 @@ class JtiServiceImpl(private val jtiRepository: JtiRepositoryImpl): JtiService {
         }
     }
 
-    private fun handleDuplicate(listOfJti: List<Jti>?, jti: Jti): Jti {
+    private fun handleDuplicate(listOfJti: List<Jti>, jti: Jti): Jti {
 
-        listOfJti?.forEach { jti ->
-            jti.isExpired24Time().deleteJti() }
+        listOfJti.forEach { it.isExpired24Time().deleteJti() }
         insert(jti)
 
         return jti

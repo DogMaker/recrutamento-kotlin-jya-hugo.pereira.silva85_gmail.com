@@ -7,9 +7,10 @@ import org.koin.dsl.module
 import repository.JtiRepositoryImpl
 import application.rest.controller.JtiController
 import application.rest.routes.JtiRouter
+import commons.DataBaseConfig
 
 
-val webhooksRoutesModule: Module = module {
+val jtiRouter: Module = module {
     single { JtiRouter(get()) }
 }
 
@@ -24,6 +25,15 @@ val jtiServiceImplModule: Module = module {
 
 val jtiRepository: Module = module {
     single <JtiRepository>{ JtiRepositoryImpl() }
+}
+
+
+val environmentConfig: Module = module {
+    single { EnvironmentConfig(get()) }
+}
+
+val dataBaseConfig: Module = module {
+    single { DataBaseConfig(get()) }
 }
 
 

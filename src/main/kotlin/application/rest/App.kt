@@ -9,33 +9,36 @@ import org.koin.core.context.stopKoin
 import org.koin.core.get
 import application.configuration.*
 import application.rest.routes.JtiRouter
+import org.koin.core.inject
 
 
 object App : KoinComponent {
 
     private lateinit var app: Javalin
+    private val config: EnvironmentConfig by inject()
 
     private fun start() {
         startKoin {
             loadKoinModules(
-                    listOf(
-                            webhooksRoutesModule,
-                            jtiControllerModule,
-                            jtiRepository,
-                            jtiServiceImplModule
-                    )
+                listOf(
+                    jtiRouter,
+                    jtiControllerModule,
+                    jtiRepository,
+                    jtiServiceImplModule,
+                    environmentConfig,
+                    dataBaseConfig
+                )
             )
         }
         app = Javalin.create().apply {
             exception(Exception::class.java, ErrorHandler()::handle)
 
-        }.start(7171)
+        }.start(config.serverPort)
 
 
         app.routes {
             get<JtiRouter>().register()
         }
-
     }
 
     fun shutdown() {

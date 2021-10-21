@@ -3,7 +3,7 @@ package repository
 import Logger
 import domain.entities.Jti
 import domain.exceptions.DuplicateJtiException
-import domain.extensions.FOURTY_EIGHT_IN_MINUTES
+import domain.extensions.FORTY_EIGHT_IN_MINUTES
 import domain.extensions.TWENTY_FOUR_HOURS_IN_MINUTES
 import domain.repository.JtiRepository
 import org.jetbrains.exposed.exceptions.ExposedSQLException
@@ -16,10 +16,9 @@ import repository.exception.DatabaseInsertionException
 import repository.schemas.JtiSchema
 import java.sql.SQLException
 import java.time.LocalDateTime
-import org.jetbrains.exposed.sql.statements.InsertStatement
 
 class JtiRepositoryImpl : JtiRepository {
-    //append a heritage from c6utils
+    //append heritage from c6utils
     private val logger = Logger
 
     override fun get(jti: String): List<Jti> {
@@ -30,16 +29,18 @@ class JtiRepositoryImpl : JtiRepository {
         }
     }
 
+
     override fun insert(jti: Jti): Jti {
         logger.info(LogTags.CREATE_JTI) { "Insert a new jti into DB $jti" }
 
         try {
             transaction {
-                JtiSchema.insert { row ->
+                /*JtiSchema.insert { row ->
                     row[JtiSchema.data] = jti.data
                     row[JtiSchema.clientId] = jti.clientId
                     row[JtiSchema.createdAt] = jti.createdAt
                 }
+                 */
             }
         } catch (exception: SQLException) {
             when ((exception as? ExposedSQLException)?.cause) {
@@ -73,7 +74,7 @@ class JtiRepositoryImpl : JtiRepository {
         return transaction {
             JtiSchema.deleteWhere {
                 JtiSchema.createdAt.between(
-                    LocalDateTime.now().minusMinutes(FOURTY_EIGHT_IN_MINUTES),
+                    LocalDateTime.now().minusMinutes(FORTY_EIGHT_IN_MINUTES),
                     LocalDateTime.now().minusMinutes(TWENTY_FOUR_HOURS_IN_MINUTES)
                 )
             }
