@@ -20,7 +20,8 @@ object App : KoinComponent {
                     listOf(
                             webhooksRoutesModule,
                             jtiControllerModule,
-                            jtiServiceModule
+                            jtiRepository,
+                            jtiServiceImplModule
                     )
             )
         }
