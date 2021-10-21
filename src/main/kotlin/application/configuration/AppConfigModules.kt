@@ -1,14 +1,12 @@
-package rest.configuration
+package application.configuration
 
 import domain.repository.JtiRepository
-import domain.services.JtiService
 import domain.services.impl.JtiServiceImpl
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import repository.JtiRepositoryImpl
-import repository.config.PostgresDBConfig
-import rest.controller.JtiController
-import rest.routes.JtiRouter
+import application.rest.controller.JtiController
+import application.rest.routes.JtiRouter
 
 
 val webhooksRoutesModule: Module = module {

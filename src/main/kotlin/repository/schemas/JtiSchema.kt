@@ -2,8 +2,6 @@ package repository.schemas
 
 import domain.entities.Jti
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.transaction
-import rest.configuration.jtiRepository
 import java.time.LocalDateTime
 
 const val DATA_LENGTH = 26

@@ -1,5 +1,6 @@
-package rest.controller
+package application.rest.controller
 
+import application.rest.exceptions.DeserializationException
 import domain.entities.Jti
 import domain.services.impl.JtiServiceImpl
 import io.javalin.http.Context
@@ -11,7 +12,7 @@ class JtiController(private val service: JtiServiceImpl){
         val jti = try {
             ctx.body<Jti>()
         } catch (e: Exception) {
-            throw Exception("Generic Exception of Desearilation")
+            throw DeserializationException("There was a problem to deserialize object")
         }
         val persisted = service.isAlreadyRegistered(jti)
         ctx.json(persisted).status(HttpStatus.CREATED_201)

@@ -1,13 +1,14 @@
-package rest
+package application.rest
 
+import commons.ErrorHandler
 import io.javalin.Javalin
 import org.koin.core.KoinComponent
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.get
-import rest.configuration.*
-import rest.routes.JtiRouter
+import application.configuration.*
+import application.rest.routes.JtiRouter
 
 
 object App : KoinComponent {
@@ -26,18 +27,15 @@ object App : KoinComponent {
             )
         }
         app = Javalin.create().apply {
-            exception(Exception::class.java) { e, _ ->
-                e.printStackTrace()
-            }
-            error(404) { ctx ->
-                ctx.json("not found")
-            }
+            exception(Exception::class.java, ErrorHandler()::handle)
+
         }.start(7171)
 
 
         app.routes {
             get<JtiRouter>().register()
         }
+
     }
 
     fun shutdown() {

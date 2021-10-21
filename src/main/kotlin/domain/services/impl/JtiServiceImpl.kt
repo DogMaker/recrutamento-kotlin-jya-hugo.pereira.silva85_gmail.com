@@ -1,23 +1,25 @@
 package domain.services.impl
 
 import domain.entities.Jti
-import domain.extensions.isHigherThan24Hours
+import domain.extensions.isExpired24Time
 import domain.services.JtiService
 import repository.JtiRepositoryImpl
 
+
 class JtiServiceImpl(private val jtiRepository: JtiRepositoryImpl): JtiService {
 
-      override fun isAlreadyRegistered(jti: Jti): Jti {
+    override fun isAlreadyRegistered(jti: Jti): Jti {
 
-        return when(val listOfJti = retrieve(jti)){
-            null -> insert(jti)
+        return when (val listOfJti = retrieve(jti)) {
+            emptyList<Jti>() -> insert(jti)
             else -> handleDuplicate(listOfJti, jti)
         }
     }
 
     private fun handleDuplicate(listOfJti: List<Jti>?, jti: Jti): Jti {
 
-        listOfJti?.forEach{  it.createdAt.isHigherThan24Hours() }
+        listOfJti?.forEach { jti ->
+            jti.isExpired24Time().deleteJti() }
         insert(jti)
 
         return jti
@@ -25,5 +27,9 @@ class JtiServiceImpl(private val jtiRepository: JtiRepositoryImpl): JtiService {
 
     private fun insert(jti: Jti) = jtiRepository.insert(jti)
     private fun retrieve(jti: Jti) = jtiRepository.get(jti.data)
+    private fun Jti.deleteJti() = jtiRepository.delete(this.data)
 }
+
+
+
 

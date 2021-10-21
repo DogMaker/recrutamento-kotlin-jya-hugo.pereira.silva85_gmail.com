@@ -1,7 +1,7 @@
-package rest.routes
+package application.rest.routes
 
 import io.javalin.apibuilder.ApiBuilder
-import rest.controller.JtiController
+import application.rest.controller.JtiController
 
 class JtiRouter(private val controller: JtiController ) {
     fun register() {
