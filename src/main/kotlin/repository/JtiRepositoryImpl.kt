@@ -7,15 +7,15 @@ import domain.extensions.FORTY_EIGHT_IN_MINUTES
 import domain.extensions.TWENTY_FOUR_HOURS_IN_MINUTES
 import domain.repository.JtiRepository
 import org.jetbrains.exposed.exceptions.ExposedSQLException
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.postgresql.util.PSQLException
 import repository.exception.DatabaseInsertionException
 import repository.schemas.JtiSchema
 import java.sql.SQLException
 import java.time.LocalDateTime
+import org.jetbrains.exposed.sql.insertAndGetId
+
 
 class JtiRepositoryImpl : JtiRepository {
     //append heritage from c6utils
@@ -35,12 +35,13 @@ class JtiRepositoryImpl : JtiRepository {
 
         try {
             transaction {
-                /*JtiSchema.insert { row ->
+                SchemaUtils.create(JtiSchema)
+                JtiSchema.insertIgnore { row ->
                     row[JtiSchema.data] = jti.data
                     row[JtiSchema.clientId] = jti.clientId
                     row[JtiSchema.createdAt] = jti.createdAt
                 }
-                 */
+
             }
         } catch (exception: SQLException) {
             when ((exception as? ExposedSQLException)?.cause) {
