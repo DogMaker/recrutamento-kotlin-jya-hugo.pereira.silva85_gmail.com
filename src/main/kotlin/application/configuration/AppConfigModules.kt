@@ -8,6 +8,8 @@ import repository.JtiRepositoryImpl
 import application.rest.controller.JtiController
 import application.rest.routes.JtiRouter
 import commons.DataBaseConfig
+import commons.TriggerConfig
+import jobs.DeleteExpiredJtiJob
 
 
 val jtiRouter: Module = module {
@@ -35,6 +37,15 @@ val environmentConfig: Module = module {
 val dataBaseConfig: Module = module {
     single { DataBaseConfig(get()) }
 }
+
+val triggerJob: Module = module {
+    single { TriggerConfig( get(), get()) }
+}
+
+val deleteExpiredJtiJob: Module = module {
+    single { DeleteExpiredJtiJob(get()) }
+}
+
 
 
 

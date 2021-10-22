@@ -9,6 +9,8 @@ import org.koin.core.context.stopKoin
 import org.koin.core.get
 import application.configuration.*
 import application.rest.routes.JtiRouter
+import commons.DataBaseConfig
+import commons.TriggerConfig
 import org.koin.core.inject
 
 
@@ -16,6 +18,8 @@ object App : KoinComponent {
 
     private lateinit var app: Javalin
     private val config: EnvironmentConfig by inject()
+    private val databaseManager: DataBaseConfig by inject()
+    private val triggerConfig: TriggerConfig by inject()
 
     private fun start() {
         startKoin {
@@ -26,7 +30,9 @@ object App : KoinComponent {
                     jtiRepository,
                     jtiServiceImplModule,
                     environmentConfig,
-                    dataBaseConfig
+                    dataBaseConfig,
+                    triggerJob,
+                    deleteExpiredJtiJob
                 )
             )
         }
@@ -39,6 +45,9 @@ object App : KoinComponent {
         app.routes {
             get<JtiRouter>().register()
         }
+
+        databaseManager.connect()
+        triggerConfig.start()
     }
 
     fun shutdown() {

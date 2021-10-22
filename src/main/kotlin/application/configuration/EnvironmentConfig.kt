@@ -15,6 +15,7 @@ class EnvironmentConfig(
     val databaseJdbcUrl = configuration[POSTGRES_JDBC_URL]
     val databaseUsername = configuration[POSTGRES_USER]
     val databasePassword = configuration[POSTGRES_PASS]
+    val cronSchedulerTime = configuration[CRON_TIME]?: "0/5 * * * * ?"
 
     companion object {
         val SERVER_PORT by intType
@@ -23,5 +24,6 @@ class EnvironmentConfig(
         val POSTGRES_JDBC_URL by stringType
         val POSTGRES_USER by stringType
         val POSTGRES_PASS by stringType
+        val CRON_TIME by stringType
     }
 }
